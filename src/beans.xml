@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+	
+   <import resource="classpath:conexion_db.xml"/>
+                                     
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+       <property name="dataSource">
+         <ref bean="datasource"/>
+       </property>
+     
+       <property name="hibernateProperties">
+           <props>
+             <!-- <prop key="hibernate.dialect">org.hibernate.dialect.FirebirdDialect</prop>  -->
+             <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+             <prop key="hibernate.show_sql">true</prop>
+           </props>
+        </property>
+     
+        <property name="mappingResources">
+	        <list>
+               <value>Cd.hbm.xml</value>
+               <value>Tema.hbm.xml</value>
+	        </list>
+        </property>   
+    </bean> 
+ 
+
+   <bean id="cdBo" class="sources.CdBoImpl" >
+        <property name="cdDao" ref="cdDao" />
+   </bean>
+
+   <bean id="temaBo" class="sources.TemaBoImpl" >
+        <property name="temaDao" ref="temaDao" />
+   </bean>
+ 
+ 
+
+   <bean id="cdDao" class="sources.CdDaoImpl" >
+        <property name="sessionFactory" ref="sessionFactory"></property>
+   </bean> 
+ 
+   <bean id="temaDao" class="sources.TemaDaoImpl" >
+        <property name="sessionFactory" ref="sessionFactory"></property>
+   </bean> 
+ 
+</beans>
